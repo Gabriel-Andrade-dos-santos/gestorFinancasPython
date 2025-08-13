@@ -12,7 +12,7 @@ def carregar_transacoes():
         with open(ARQUIVO, 'r', encoding='utf-8') as file:
             dados = json.load(file)
             for arquivos in dados:
-                arquivos["data"] = datetime.strptime(arquivos["data"], "%d/%M/%Y").date()
+                arquivos["data"] = datetime.strptime(arquivos["data"], "%d/%m/%Y").date()
                 return dados
     except FileNotFoundError:
         return []

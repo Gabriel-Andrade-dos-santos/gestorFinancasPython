@@ -1,3 +1,5 @@
+from transacoes import *
+
 def exibir_menu():
     print("\n---Gestor de finanças---\n")
     print("1 - Adicionar transações. ")
@@ -14,7 +16,7 @@ def main():
         print()
         try:    
             if escolha == '1':
-                ...
+                adicionar_transacoes()
             if escolha == '2':
                 ...
             if escolha == '3':
