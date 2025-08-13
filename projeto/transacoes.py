@@ -39,5 +39,5 @@ def adicionar_transacoes():
         "data" : data_formatada
     }
 
-    transacao.append(informacoes)
-    salvar_transacoes(transacao)
+    informacoes.append(transacao)
+    salvar_transacoes(informacoes)
