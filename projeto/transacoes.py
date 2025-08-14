@@ -6,6 +6,7 @@ informacoes = carregar_transacoes()
 
 transacao_filtrada = []
 
+
 def adicionar_transacoes():
     tipo = input("Qual transação deseja registrar (ENTRADA/SAIDA)").strip().lower()
     if tipo not in ["entrada", "saida"]:
@@ -44,6 +45,8 @@ def adicionar_transacoes():
     informacoes.append(transacao)
     salvar_transacoes(informacoes)
 
+
+
 def listar_transacoes():
     if not informacoes:
         print("Ainda não há informações aqui. ")
@@ -52,7 +55,9 @@ def listar_transacoes():
     for ordem, valor in enumerate(informacoes, 1):
         print(f"{ordem}) - {valor["data"]} - {valor["tipo"]} - {valor["valor"]} - {valor["descrição"]} - {valor["categoria"]}")
 
-def exibir_resumos():
+
+
+def exibir_resumo_mes():
     print("---RESUMO DO MÊS---")
     if not informacoes:
         print("Não há resumos. ")
@@ -72,7 +77,7 @@ def exibir_resumos():
         data = info["data"]
         if isinstance(data, str):
             try:
-                data = datetime.strptime(data, "%d/%M/%Y").date()
+                data = datetime.strptime(data, "%d/%m/%Y").date()
             except ValueError:
                 continue
 
@@ -92,4 +97,84 @@ def exibir_resumos():
         elif resumoMensal < 0:
             print(f"Você terminou o mês de {mesInt}/{anoInt} com uma dívida de R${resumoMensal:.2f}")
         else:
-            print("Não há sobras nem dívidas esse mês. ")
+            print(f"Não há sobras nem dívidas no mês {mesInt}/{anoInt}. ")
+
+
+
+def editar_transacoes():
+    print("---EDITOR DE TRANSAÇÕES---")
+    if not informacoes:
+        print("Não há informações para edição")
+        return
+    listar_transacoes()
+
+    try:
+        indice = int(input("Digite o índice que deseja editar: "))
+        print()
+
+        if 1 <= indice <= len(informacoes):
+            info = informacoes[indice -1]
+            print(f"Editando: {info["descrição"]} - R${info["valor"]:.2f}")
+
+            novo_tipo = input(f"Digite o novo tipo: (ENTER - Para manter -> {info["tipo"]} <- )")
+            if novo_tipo:
+                info["tipo"] = novo_tipo
+
+            novo_valor = input(f"Novo valor: (ENTER - Para manter -> {info['valor']} <- )  ")
+            if novo_valor:
+                info["valor"] = float(novo_valor)
+
+            nova_descricao = input(f"Digite a nova descrição: (ENTER- Para manter -> {info["descrição"]} <- )")
+            if nova_descricao:
+                info["descrição"] = nova_descricao
+
+            nova_categoria = input(f"Digite a nova categoria: (ENTER - Para manter -> {info["categoria"]} <- )")
+            if nova_categoria:
+                info["categoria"] = nova_categoria
+
+            nova_data = input(f"Digite a nova data (dd/mm/aaaa): ENTER - Para manter -> {info["data"]} <- ")
+            if nova_data:
+                try:
+                    info["data"] = datetime.strptime(nova_data, "%d/%m/%Y").date()
+                except ValueError:
+                    print("⚠️ Data inválida. Mantendo a original.")
+                    #return
+                    
+                salvar_transacoes(informacoes)
+                print("✅ Transação atualizada com sucesso!")
+            else:
+                 print("Índice inválido.")
+    except ValueError:
+        print("Digite um índice válido! ")
+        #return
+
+
+
+def excluir_transacoes():
+    print("---EXCLUIR ITENS---")
+    if not informacoes:
+        print("Não há nada para excluir. ")
+        return
+    listar_transacoes()
+    try:
+        indice = int(input("Digite o índice que deseja excluir: "))
+        print()
+
+        if 1 <= indice <= len(informacoes):
+            info = informacoes[indice -1]
+        print(f"O item do índice {indice} com os itens: {info["tipo"]} - {info["valor"]} - {info["descrição"]} - {info["categoria"]} - {info["data"]}")
+        print("Será excluído permanentemente")
+        escolha = input("Tem certeza ? (S/N)").lower()
+        if escolha == 's':
+            removida = informacoes.pop(indice - 1)
+            salvar_transacoes(informacoes)
+            print(f"✅ Transação removida: {removida['descricao']} - R$ {removida['valor']:.2f}")
+        elif escolha == 'n':
+            print("Exclusão cancelada. ")
+            return
+        else:
+            print("Caractére inválodo! ")
+            
+    except ValueError:
+        print("Entrada inválida.")
+        return
