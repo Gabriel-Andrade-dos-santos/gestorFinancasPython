@@ -18,9 +18,9 @@ def main():
             if escolha == '1':
                 adicionar_transacoes()
             if escolha == '2':
-                ...
+                listar_transacoes()
             if escolha == '3':
-                ...
+                exibir_resumos()
             if escolha == '4':
                 ...
             if escolha == '5':
