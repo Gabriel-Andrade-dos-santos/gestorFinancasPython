@@ -20,9 +20,9 @@ def main():
             if escolha == '2':
                 listar_transacoes()
             if escolha == '3':
-                exibir_resumos()
+                exibir_resumo_mes()
             if escolha == '4':
-                ...
+                editar_transacoes()
             if escolha == '5':
                 ...
             if escolha == '6':
