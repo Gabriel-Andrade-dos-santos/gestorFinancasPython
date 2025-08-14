@@ -13,7 +13,7 @@ def carregar_transacoes():
             dados = json.load(file)
             for arquivos in dados:
                 arquivos["data"] = datetime.strptime(arquivos["data"], "%d/%m/%Y").date()
-                return dados
+            return dados
     except FileNotFoundError:
         return []
     
@@ -30,4 +30,4 @@ def salvar_transacoes(transacoes):
 
             dados.append(itens_copy) 
 
-            json.dump(dados, file,ensure_ascii=False, indent=4)
+        json.dump(dados, file,ensure_ascii=False, indent=4)

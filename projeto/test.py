@@ -24,15 +24,14 @@ def main():
             if escolha == '4':
                 editar_transacoes()
             if escolha == '5':
-                ...
+                excluir_transacoes()
             if escolha == '6':
                 print("Saiu do sistema. ")
                 break
             else:
-                print("Digite um dos valores acima. ")
                 continue
         except ValueError:
             continue
 
-if __name__ == "__test__":
+if __name__ == "__main__":
     main()

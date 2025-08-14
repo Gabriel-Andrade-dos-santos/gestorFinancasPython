@@ -4,10 +4,11 @@ from salvarInfos import carregar_transacoes, salvar_transacoes
 
 informacoes = carregar_transacoes()
 
-transacao_filtrada = []
+
 
 
 def adicionar_transacoes():
+    print("\n-----Adicionar transaões-----")
     tipo = input("Qual transação deseja registrar (ENTRADA/SAIDA)").strip().lower()
     if tipo not in ["entrada", "saida"]:
         print("Opção inválida, digite novamente. \n")
@@ -19,13 +20,13 @@ def adicionar_transacoes():
     except ValueError:
         print("Valor inválido! Digite números. ")
 
-    descricao = input("Desvreva a transação: ")
+    descricao = input("Descreva a transação: ")
     categoria = input("Categoria da transação: ")
-    data_str = input("DATA (dd/mm/aaaa) ou deixe em branco para data atual: ")
+    data_str = input("DATA (dd/mm/aaaa) ou deixe em branco para data atual: ").strip()
 
     if data_str:
         try:
-            data = datetime.strftime(data_str, "%d/%m/%Y").date()
+            data = datetime.strptime(data_str, "%d/%m/%Y").date()
             data_formatada = data.strftime("%d/%m/%Y")
         except ValueError:
             print("Data inválida ")
@@ -44,6 +45,8 @@ def adicionar_transacoes():
 
     informacoes.append(transacao)
     salvar_transacoes(informacoes)
+    print("✅ Transação adicionada com sucesso!\n") 
+    return
 
 
 
@@ -63,8 +66,9 @@ def exibir_resumo_mes():
         print("Não há resumos. ")
         return
     
-    mes = input("Mês: mm").zfill(2)
-    ano = input("De que ano: aaaa")
+    transacao_filtrada = []
+    mes = input("Mês mm: ").zfill(2)
+    ano = input("De que ano aaaa: ")
 
     try:
         mesInt = int(mes)
@@ -84,20 +88,27 @@ def exibir_resumo_mes():
         if data.month == mesInt and data.year == anoInt:
             transacao_filtrada.append(info)
 
-        if not transacao_filtrada:
+    if not transacao_filtrada:
             print("Não há nenhum registro. ")
             return
         
-        entrada = sum(item["valor"] for item in transacao_filtrada if item["tipo"] == "entrada")
-        saida = sum(item["valor"] for item in transacao_filtrada if item["tipo"] == "saida")
-        resumoMensal = entrada - saida
+    entrada = sum(item["valor"] for item in transacao_filtrada if item["tipo"] == "entrada")
+    saida = sum(item["valor"] for item in transacao_filtrada if item["tipo"] == "saida")
+    resumoMensal = entrada - saida
 
-        if resumoMensal > 0:
-            print(f"Você terminou o mês de {mesInt}/{anoInt} com valor positivo de R${resumoMensal:.2f}")
-        elif resumoMensal < 0:
-            print(f"Você terminou o mês de {mesInt}/{anoInt} com uma dívida de R${resumoMensal:.2f}")
-        else:
-            print(f"Não há sobras nem dívidas no mês {mesInt}/{anoInt}. ")
+    print(f"\n---Saldo do mês {mesInt}/{anoInt}--- \n")
+    print(f"Entradas: R${entrada:.2f} ")
+    print(f"Saídas: R${saida:.2f} ")
+    print(f"Saldo mensal: {resumoMensal:.2f}\n")
+
+    if resumoMensal > 0:
+        print(f"Você terminou o mês de {mesInt}/{anoInt} com valor positivo de R${resumoMensal:.2f}")
+        
+    elif resumoMensal == 0:
+        print(f"Não há sobras nem dívidas no mês {mesInt}/{anoInt}. ")
+            
+    else:
+        print(f"Você terminou o mês de {mesInt}/{anoInt} com uma dívida de R${resumoMensal:.2f}")
 
 
 
@@ -168,7 +179,7 @@ def excluir_transacoes():
         if escolha == 's':
             removida = informacoes.pop(indice - 1)
             salvar_transacoes(informacoes)
-            print(f"✅ Transação removida: {removida['descricao']} - R$ {removida['valor']:.2f}")
+            print(f"✅ Transação removida: {removida['descrição']} - R$ {removida['valor']:.2f}")
         elif escolha == 'n':
             print("Exclusão cancelada. ")
             return
