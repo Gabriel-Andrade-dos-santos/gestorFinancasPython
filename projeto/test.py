@@ -1,4 +1,8 @@
-from transacoes import *
+from transacoes import adicionar_transacoes
+from excluir import excluir_transacoes
+from listar import listar_transacoes
+from exibir import exibir_resumo_mes
+from editar import editar_transacoes
 
 def exibir_menu():
     print("\n---Gestor de finanças---\n")
