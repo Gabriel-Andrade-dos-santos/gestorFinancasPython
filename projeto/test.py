@@ -1,7 +1,7 @@
 from transacoes import adicionar_transacoes
 from excluir import excluir_transacoes
 from listar import listar_transacoes
-from exibir import exibir_resumo_mes
+from exibir import exibir_resumos
 from editar import editar_transacoes
 
 def exibir_menu():
@@ -24,7 +24,7 @@ def main():
             if escolha == '2':
                 listar_transacoes()
             if escolha == '3':
-                exibir_resumo_mes()
+                exibir_resumos()
             if escolha == '4':
                 editar_transacoes()
             if escolha == '5':
